@@ -25,7 +25,11 @@ const ToastContainer = () => {
       <div className=" flex-1 md:max-w-5xl rounded-xl flex  flex-col gap-y-8 items-center bg-white py-20">
         <div className="flex  md:flex-row flex-col  items-center gap-1">
           {['info', 'warning', 'success', 'danger'].map((type, key) => (
-            <Button intent={type} onClick={() => addToast(toastTemplate(type))}>
+            <Button
+              intent={type}
+              onClick={() => addToast(toastTemplate(type))}
+              key={key}
+            >
               toast
             </Button>
           ))}
@@ -34,6 +38,7 @@ const ToastContainer = () => {
         <div className="flex md:flex-row flex-col gap-3 justify-around">
           <select
             className="block border border-gray-200"
+            defaultValue="bottomRight"
             onChange={(e) => changeToastPosition(e.target.value)}
           >
             <option>position</option>
@@ -41,9 +46,7 @@ const ToastContainer = () => {
             <option value="topLeft">Top Left</option>
             <option value="topRight">Top Right</option>
             <option value="bottomLeft">Bottom Left</option>
-            <option value="bottomRight" selected>
-              Bottom Right
-            </option>
+            <option value="bottomRight">Bottom Right</option>
           </select>
           <div>
             <input
@@ -53,7 +56,7 @@ const ToastContainer = () => {
               onChange={(e) => setExtra(e.target.checked)}
               value={true}
             />
-            <label for="extra" className="pl-2">
+            <label htmlFor="extra" className="pl-2">
               extra buttons
             </label>
           </div>
@@ -65,7 +68,7 @@ const ToastContainer = () => {
               onChange={(e) => setDescription(e.target.checked)}
               value={true}
             />
-            <label for="description" className="pl-2">
+            <label htmlFor="description" className="pl-2">
               show description
             </label>
           </div>

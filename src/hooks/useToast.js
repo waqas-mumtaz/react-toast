@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { DispatchContext, StateContext } from '../context/Context';
 
 //toast hook

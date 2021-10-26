@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { classNames } from '../../lib';
 import useToast from '../../hooks/useToast';
 
@@ -28,7 +28,7 @@ export function Toast() {
     >
       {getToasts &&
         getToasts.map((toast, key) => (
-          <div id={'toast' + Date.now()}>
+          <div id={'toast' + Date.now()} key={key}>
             <Alert
               dismissable
               id={toast.id}
