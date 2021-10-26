@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from '../Button';
 import { classNames } from '../../lib';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import useToast from '../../hooks/useToast';
 import {
   faTimes,
   faCheckCircle,
@@ -10,6 +11,7 @@ import {
   faExclamationCircle,
 } from '@fortawesome/free-solid-svg-icons';
 
+// different types of alert
 const types = {
   info: 'bg-blue-100 border border-blue-300',
   success: 'bg-green-100 border border-green-300',
@@ -30,8 +32,10 @@ const iconColors = {
   warning: 'text-yellow-500',
   danger: 'text-red-500',
 };
+
 export const Alert = ({
   title,
+  id,
   description,
   type = 'info',
   boxView = false,
@@ -42,6 +46,16 @@ export const Alert = ({
   dismissable = false,
   onDismiss,
 }) => {
+  const { removeToast, duration, length } = useToast();
+
+  //auto hide taost
+  useEffect(() => {
+    if (length > 0 && duration) {
+      const timer = setTimeout(() => removeToast(id), duration);
+      return () => clearTimeout(timer);
+    }
+  }, [duration, removeToast, length, id]);
+
   return (
     <div
       className={classNames(
@@ -70,20 +84,21 @@ export const Alert = ({
       {extra && (
         <div className={`${boxView ? 'self-center w-full pt-4' : 'self-end'}`}>
           <div className="flex flex-row gap-x-2 justify-center">
-            <Button type="white" text="ok" onClick={onConfirm} />
-            <Button type="danger" text="cancel" onClick={onCancel} />
+            <Button intent={type} text="ok" onClick={onConfirm} />
+            <Button intent="white" text="cancel" onClick={onCancel} />
           </div>
         </div>
       )}
-      {dismissable && (
-        <div className={`absolute transform origin-center right-6 top-4`}>
-          <FontAwesomeIcon
-            icon={faTimes}
-            onClick={onDismiss}
-            className="hover:cursor-pointer text-gray-700 opacity-50 hover:opacity-100"
-          />
-        </div>
-      )}
+      {(dismissable && !extra) ||
+        (boxView && (
+          <div className={`absolute transform origin-center right-6 top-4`}>
+            <FontAwesomeIcon
+              icon={faTimes}
+              onClick={onDismiss}
+              className="hover:cursor-pointer text-gray-700 opacity-50 hover:opacity-100"
+            />
+          </div>
+        ))}
     </div>
   );
 };
