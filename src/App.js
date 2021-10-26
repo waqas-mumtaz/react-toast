@@ -1,15 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Button } from './components/Button';
-import { dangerouslySetToast } from './components/Toast';
+import { Toast } from './components/Toast';
+import { useToastState } from './context/toastContext';
+import useToast from "./hooks/useToast"
 const App = () => {
   const [position, setPosition] = useState('bottomRight');
   const [extra, setExtra] = useState(false);
   const [description, setDescription] = useState(false);
 
+  // const [toasts, setToasts] = useState([]);
+
+  // useEffect(() => {
+  //   if (toasts.length > 0) {
+  //     const timer = setTimeout(() => setToasts(toasts => toasts.slice(1)), 1000)
+  //     return () => clearTimeout(timer)
+  //   }
+  // }, [toasts])
+
+  // const addToast = (toast) => {
+  //   setToasts([...toasts, toast]);
+  // };
+
+  const { addToast } = useToast();
+  // const [state, dispatch] = useTest();
+  const state = useToastState();
+
+  console.log("toastState", state)
   let count = 1;
   return (
     <div className="bg-gray-100 min-h-screen flex items-center justify-center">
       <div className=" flex-1 md:max-w-5xl rounded-xl flex  flex-col gap-y-8 items-center bg-white py-20">
+        <Button onClick={() => addToast({
+          duration: 5000,
+          position: "bottomRight",
+          title: `Toast`,
+          description: 'Ipsum voluptate commodo et quis elit sunt eiusmod do ipsum. Cillum ipsum eiusmod et Lorem proident pariatur consequat veniam tempor commodo ad culpa non occaecat.',
+          type: "danger",
+          extra: true,
+        })}>toast</Button>
+        {/* <Toast toasts={items} /> */}
         <div className="flex md:flex-row flex-col gap-3 justify-around">
           <select
             className="block border border-gray-200"
@@ -49,7 +78,7 @@ const App = () => {
             </label>
           </div>
         </div>
-        <div className="flex  md:flex-row flex-col  items-center gap-1">
+        {/* <div className="flex  md:flex-row flex-col  items-center gap-1">
           {['info', 'success', 'warning', 'danger'].map((item, index) => (
             <Button
               intent={item}
@@ -69,7 +98,7 @@ const App = () => {
               {item}
             </Button>
           ))}
-        </div>
+        </div> */}
       </div>
     </div>
   );
